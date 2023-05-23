@@ -1,4 +1,6 @@
 using API.DataBase;
+using API.Interface;
+using API.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("MyContext"))
 );
+
+builder.Services.AddTransient<IExerciseRepository, ExerciseRepository>();
+
 
 var app = builder.Build();
 
