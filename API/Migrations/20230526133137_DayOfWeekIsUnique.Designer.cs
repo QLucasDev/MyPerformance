@@ -4,6 +4,7 @@ using API.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20230526133137_DayOfWeekIsUnique")]
+    partial class DayOfWeekIsUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,15 +46,13 @@ namespace API.Migrations
                     b.Property<int>("Series")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrainingId")
+                    b.Property<int>("TrainingId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TrainingId");
 
                     b.ToTable("Exercises");
                 });
@@ -84,8 +85,6 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TrainingId");
 
                     b.ToTable("ExerciseRecords");
                 });
@@ -158,26 +157,6 @@ namespace API.Migrations
                     b.ToTable("TrainingRecords");
                 });
 
-            modelBuilder.Entity("API.Models.Exercise", b =>
-                {
-                    b.HasOne("API.Models.Training", "training")
-                        .WithMany("Exercices")
-                        .HasForeignKey("TrainingId");
-
-                    b.Navigation("training");
-                });
-
-            modelBuilder.Entity("API.Models.ExerciseRecord", b =>
-                {
-                    b.HasOne("API.Models.TrainingRecord", "training")
-                        .WithMany("Exercices")
-                        .HasForeignKey("TrainingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("training");
-                });
-
             modelBuilder.Entity("API.Models.Record", b =>
                 {
                     b.HasOne("API.Models.TrainingRecord", "TrainingRecord")
@@ -185,16 +164,6 @@ namespace API.Migrations
                         .HasForeignKey("TrainingRecordId");
 
                     b.Navigation("TrainingRecord");
-                });
-
-            modelBuilder.Entity("API.Models.Training", b =>
-                {
-                    b.Navigation("Exercices");
-                });
-
-            modelBuilder.Entity("API.Models.TrainingRecord", b =>
-                {
-                    b.Navigation("Exercices");
                 });
 #pragma warning restore 612, 618
         }

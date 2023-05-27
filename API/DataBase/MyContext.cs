@@ -26,12 +26,13 @@ namespace API.DataBase
             builder.Entity<Exercise>().Property(a => a.Series).IsRequired();
             builder.Entity<Exercise>().Property(a => a.Repetitions).IsRequired();
             builder.Entity<Exercise>().HasOne(a => a.training).WithMany(a => a.Exercices).HasForeignKey(a => a.TrainingId);
-            builder.Entity<Exercise>().Ignore(a => a.training);
+            builder.Entity<Exercise>().Property(a => a.TrainingId).IsRequired(false);
+            
         
             builder.Entity<Training>().HasKey(a => a.Id);
             builder.Entity<Training>().Property(a => a.DayOfWeek).IsRequired();
-            builder.Entity<Training>().Property(a => a.Exercices).IsRequired();
-            builder.Entity<Training>().Ignore(a => a.Exercices);
+            builder.Entity<Training>().HasIndex(a => a.DayOfWeek).IsUnique();
+            
 
             builder.Entity<Record>().HasKey(a => a.Id);
             builder.Entity<Record>().HasOne(a => a.TrainingRecord);
@@ -41,12 +42,12 @@ namespace API.DataBase
             builder.Entity<ExerciseRecord>().Property(a => a.Series).IsRequired();
             builder.Entity<ExerciseRecord>().Property(a => a.Repetitions).IsRequired();
             builder.Entity<ExerciseRecord>().HasOne(a => a.training).WithMany(a => a.Exercices).HasForeignKey(a => a.TrainingId);
-            builder.Entity<ExerciseRecord>().Ignore(a => a.training);
+            
         
             builder.Entity<TrainingRecord>().HasKey(a => a.Id);
             builder.Entity<TrainingRecord>().Property(a => a.DayOfWeek).IsRequired();
-            builder.Entity<TrainingRecord>().Property(a => a.Exercices).IsRequired();
-            builder.Entity<TrainingRecord>().Ignore(a => a.Exercices);
+            
+            
             
         }
     }

@@ -13,6 +13,7 @@ namespace API.Interface
         public void AddTraining(Training training);
         public void UpdateTraining(Training training);
         public Training DeleteTraining(int Id);
+        public bool CheckTraining(int id);
 
     }
 }

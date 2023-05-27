@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using API.DataBase;
 using API.Interface;
 using API.Repository;
@@ -17,7 +18,9 @@ builder.Services.AddDbContext<MyContext>(
 );
 
 builder.Services.AddTransient<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddTransient<ITrainingRepository, TrainingRepository>();
 
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 var app = builder.Build();
 

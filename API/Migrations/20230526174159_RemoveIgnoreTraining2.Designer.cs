@@ -4,6 +4,7 @@ using API.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20230526174159_RemoveIgnoreTraining2")]
+    partial class RemoveIgnoreTraining2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,7 @@ namespace API.Migrations
                     b.Property<int>("Series")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrainingId")
+                    b.Property<int>("TrainingId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -162,7 +165,9 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Training", "training")
                         .WithMany("Exercices")
-                        .HasForeignKey("TrainingId");
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("training");
                 });

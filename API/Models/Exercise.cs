@@ -8,11 +8,11 @@ namespace API.Models
     public class Exercise
     {
         public int Id { get; set; }
-        public int TrainingId { get; set; }
+        public int? TrainingId { get; set; }
         public string Name { get; set; }
         public int Series { get; set; }
         public int Repetitions { get; set; }
-        public Training training { get; set; }
+        public virtual Training training { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         
