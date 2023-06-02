@@ -17,10 +17,9 @@ builder.Services.AddDbContext<MyContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("MyContext"))
 );
 
-builder.Services.AddTransient<IExerciseRepository, ExerciseRepository>();
-builder.Services.AddTransient<ITrainingRepository, TrainingRepository>();
+builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
-builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 
