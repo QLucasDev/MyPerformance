@@ -17,6 +17,8 @@ builder.Services.AddDbContext<MyContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("MyContext"))
 );
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

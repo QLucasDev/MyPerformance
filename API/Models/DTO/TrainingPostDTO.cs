@@ -1,15 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Models
+namespace API.Models.DTO
 {
-    public class Training
+    public class TrainingPostDTO
     {
-        public int Id { get; set; }
         public DayOfWeek DayOfWeek {get; set; }
         public virtual ICollection<Exercise> Exercices {get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; } 
+
+        public TrainingPostDTO()
+        {
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
+        }
     }
 }

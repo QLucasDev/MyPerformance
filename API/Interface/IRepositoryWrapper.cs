@@ -7,8 +7,8 @@ namespace API.Interface
 {
     public interface IRepositoryWrapper
     {
-        IExercise Exercise{ get;}
-        ITraining Training{ get;}
-        void Save();
+        IExerciseRepository Exercise{ get;}
+        ITrainingRepository Training{ get;}
+        Task Save();
     }
 }

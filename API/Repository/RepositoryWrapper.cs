@@ -13,7 +13,7 @@ namespace API.Repository
         private ExerciseRepository _exercise;
         private TrainingRepository _training;
 
-        public IExercise Exercise {
+        public IExerciseRepository Exercise {
             get{
                 if(_exercise == null)
                 {
@@ -23,7 +23,7 @@ namespace API.Repository
             }
         }
 
-        public ITraining Training {
+        public ITrainingRepository Training {
             get{
                 if(_training == null)
                 {
@@ -39,9 +39,9 @@ namespace API.Repository
             _context = myContext;
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace API.Repository
             myContext = _myContext;
         }
 
-        public IQueryable<T> FindAll() => myContext.Set<T>().AsNoTracking();
+         public IQueryable<T> FindAll() => myContext.Set<T>().AsNoTracking();
          public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression) => 
             myContext.Set<T>().Where(expression).AsNoTracking();
          public void Create(T entity) => myContext.Set<T>().Add(entity);
