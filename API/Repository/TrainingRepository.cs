@@ -20,7 +20,7 @@ namespace API.Repository
             return await FindAll().ToListAsync();
         }
 
-        public async Task<Training> GetTrainingById(int id)
+        public async Task<Training> GetTrainingById(long id)
         {
             return await FindByCondition(training => training.Id.Equals(id)).Include(x => x.Exercices).FirstOrDefaultAsync();
         }

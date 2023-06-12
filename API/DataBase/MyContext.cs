@@ -13,6 +13,8 @@ namespace API.DataBase
         {
             
         }
+
+        public DbSet<User> Users { get; set;}
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Training> Training { get; set; }
         public DbSet<Record> Records { get; set; }
@@ -27,15 +29,18 @@ namespace API.DataBase
             builder.Entity<Exercise>().Property(a => a.Repetitions).IsRequired();
             builder.Entity<Exercise>().HasOne(a => a.training).WithMany(a => a.Exercices).HasForeignKey(a => a.TrainingId);
             builder.Entity<Exercise>().Property(a => a.TrainingId).IsRequired(false);
+            builder.Entity<Exercise>().HasOne(a => a.User);
             
         
             builder.Entity<Training>().HasKey(a => a.Id);
             builder.Entity<Training>().Property(a => a.DayOfWeek).IsRequired();
             builder.Entity<Training>().HasIndex(a => a.DayOfWeek).IsUnique();
+            builder.Entity<Training>().HasOne(a => a.User);
             
 
             builder.Entity<Record>().HasKey(a => a.Id);
             builder.Entity<Record>().HasOne(a => a.TrainingRecord);
+            builder.Entity<Record>().HasOne(a => a.User);
 
             builder.Entity<ExerciseRecord>().HasKey(a => a.Id);
             builder.Entity<ExerciseRecord>().Property(a => a.Name).IsRequired();

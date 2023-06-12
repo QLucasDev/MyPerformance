@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Models.DTO
+namespace API.Models
 {
-    public class ExerciseDTO
+    public class User
     {
         public long Id { get; set; }
-        //public int? TrainingId { get; set; }
         public string Name { get; set; }
-        public int Series { get; set; }
-        public int Repetitions { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        
     }
 }

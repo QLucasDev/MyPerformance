@@ -6,7 +6,7 @@ namespace API.Models
 {
     public class TrainingRecord
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DayOfWeek DayOfWeek {get; set; }
         public virtual ICollection<ExerciseRecord> Exercices {get; set; }
         public bool IsDone { get; set; }

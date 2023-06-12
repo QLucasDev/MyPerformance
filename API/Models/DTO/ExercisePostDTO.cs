@@ -7,7 +7,7 @@ namespace API.Models.DTO
 {
     public class ExercisePostDTO
     {
-        public int? TrainingId { get; set; }
+        public long? TrainingId { get; set; }
         public string Name { get; set; }
         public int Series { get; set; }
         public int Repetitions { get; set; }

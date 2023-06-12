@@ -6,9 +6,10 @@ namespace API.Models
 {
     public class Training
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DayOfWeek DayOfWeek {get; set; }
         public virtual ICollection<Exercise> Exercices {get; set; }
+        public User User { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

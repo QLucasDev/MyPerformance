@@ -9,8 +9,9 @@ namespace API.Models
     public class Record
     {
         
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime dateTime { get; set; } = DateTime.Now;
         public TrainingRecord TrainingRecord { get; set; }
+        public User User { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}", Name = "TraininById")]
-        public async Task<IActionResult> GetTrainingById(int id)
+        public async Task<IActionResult> GetTrainingById(long id)
         {
             try{
                 var training = await _repository.Training.GetTrainingById(id);
@@ -77,7 +77,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTraining(int id, [FromBody]TrainingUpdateDTO trainingUpdate)
+        public async Task<IActionResult> UpdateTraining(long id, [FromBody]TrainingUpdateDTO trainingUpdate)
         {
             try{
                 if(trainingUpdate is null || !ModelState.IsValid){
@@ -102,7 +102,7 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteTraining(int id)
+        public async Task<IActionResult> DeleteTraining(long id)
         {
             try{
                 var training = await _repository.Training.GetTrainingById(id);

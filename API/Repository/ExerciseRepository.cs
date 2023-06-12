@@ -21,7 +21,7 @@ namespace API.Repository
                 return await FindAll().ToListAsync();            
         }
 
-        public async Task<Exercise> GetExerciseById(int id){
+        public async Task<Exercise> GetExerciseById(long id){
             return await FindByCondition(exercise => exercise.Id.Equals(id)).FirstOrDefaultAsync();
         }
 

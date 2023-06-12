@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}", Name = "ExerciseById")]
-        public async Task<IActionResult> GetExerciseById(int id)
+        public async Task<IActionResult> GetExerciseById(long id)
         {
             try{
                 var exercise = await _repository.Exercise.GetExerciseById(id);
@@ -78,7 +78,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateExecise(int id, [FromBody]ExerciseUpdateDTO exerciseUpdate)
+        public async Task<IActionResult> UpdateExecise(long id, [FromBody]ExerciseUpdateDTO exerciseUpdate)
         {
             try{
                 if(exerciseUpdate is null || !ModelState.IsValid){
@@ -103,7 +103,7 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteExercise(int id)
+        public async Task<IActionResult> DeleteExercise(long id)
         {
             try{
                 var exercise = await _repository.Exercise.GetExerciseById(id);

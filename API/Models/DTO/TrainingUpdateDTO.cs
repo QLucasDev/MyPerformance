@@ -7,7 +7,7 @@ namespace API.Models.DTO
 {
     public class TrainingUpdateDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DayOfWeek DayOfWeek {get; set; }
         public virtual ICollection<Exercise> Exercices {get; set; }
         public DateTime UpdatedAt { get; set; }
