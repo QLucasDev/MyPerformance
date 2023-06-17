@@ -10,8 +10,20 @@ namespace API.Repository
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private MyContext _context;
+        
+        private UserRepository _user;
         private ExerciseRepository _exercise;
         private TrainingRepository _training;
+
+        public IUserRepository User {
+            get{
+                if(_user == null)
+                {
+                    _user = new UserRepository(_context);
+                }
+                return _user;
+            }
+        }
 
         public IExerciseRepository Exercise {
             get{

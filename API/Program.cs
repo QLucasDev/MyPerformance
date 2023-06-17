@@ -1,8 +1,10 @@
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using API.DataBase;
 using API.Interface;
 using API.Repository;
+using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +24,13 @@ builder.Services.AddDbContext<MyContext>(
 
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+builder.Services.AddSingleton<HashAlgorithm>(SHA256.Create());
+builder.Services.AddSingleton<IHash, HashProvider>();
+
+builder.Services.AddSingleton<IJwtProvider, JwtProvider>();
+
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
 builder.Services.AddAuthentication(opt => {
@@ -35,8 +44,8 @@ builder.Services.AddAuthentication(opt => {
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:5028",
-            ValidAudience = "https://localhost:5028",
+            ValidIssuer = builder.Configuration["profiles:http:applicationUrl"],
+            ValidAudience = builder.Configuration["profiles:http:applicationUrl"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["PasswordKey"]))
         };
     });
@@ -54,6 +63,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

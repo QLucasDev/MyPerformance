@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace API.Models.DTO
 {
-    public class ExercisePostDTO
+    public class UserRegisterDTO
     {
-        public long UserId { get; set; }
-        public long? TrainingId { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
-        public int Series { get; set; }
-        public int Repetitions { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
-        public ExercisePostDTO()
+        public UserRegisterDTO()
         {
             CreatedAt = DateTime.Now;
             UpdatedAt = DateTime.Now;

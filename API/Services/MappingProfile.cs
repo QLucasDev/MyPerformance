@@ -12,6 +12,9 @@ namespace API.Services
     {
         public MappingProfile()
         {
+            CreateMap<UserLoginDTO, User>();
+            CreateMap<UserRegisterDTO, User>();
+            
             CreateMap<Exercise, ExerciseDTO>();
             CreateMap<ExercisePostDTO, Exercise>();
             CreateMap<ExerciseUpdateDTO, Exercise>();

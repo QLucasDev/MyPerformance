@@ -7,6 +7,7 @@ using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using API.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -16,41 +17,49 @@ namespace API.Controllers
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
+        private readonly IJwtProvider _jwtProvider;
 
-        public ExerciseController(IRepositoryWrapper repository, IMapper mapper)
+        public ExerciseController(IRepositoryWrapper repository, IMapper mapper, IJwtProvider jwtProvider)
         {
             _repository = repository;
             _mapper = mapper;
+            _jwtProvider = jwtProvider;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetExercises()
+        [HttpGet, Authorize]
+        public async Task<IActionResult> GetUserExercises()
         {
-            try{
+            try
+            {
                 var exercises = await _repository.Exercise.GetExercises();
                 var exercisesDTO = _mapper.Map<IEnumerable<ExerciseDTO>>(exercises);
                 return Ok(exercisesDTO);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
-            
+
         }
 
-        [HttpGet("{id}", Name = "ExerciseById")]
+        [HttpGet("{id}", Name = "ExerciseById"), Authorize]
         public async Task<IActionResult> GetExerciseById(long id)
         {
-            try{
+            try
+            {
                 var exercise = await _repository.Exercise.GetExerciseById(id);
-                if(exercise == null){
+                if (exercise == null)
+                {
                     return NotFound();
                 }
-                else{
+                else
+                {
                     var exerciseDTO = _mapper.Map<ExerciseDTO>(exercise);
                     return Ok(exerciseDTO);
                 }
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }
@@ -58,8 +67,10 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateExercise([FromBody] ExercisePostDTO exercisePost)
         {
-            try{
-                if(exercisePost is null || !ModelState.IsValid){
+            try
+            {
+                if (exercisePost is null || !ModelState.IsValid)
+                {
                     return BadRequest();
                 }
 
@@ -70,23 +81,27 @@ namespace API.Controllers
 
                 var createdExercise = _mapper.Map<ExerciseDTO>(exercise);
 
-                 return CreatedAtRoute("ExerciseById", exercise.Id, exercise);
+                return CreatedAtRoute("ExerciseById", exercise.Id, exercise);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateExecise(long id, [FromBody]ExerciseUpdateDTO exerciseUpdate)
+        public async Task<IActionResult> UpdateExecise(long id, [FromBody] ExerciseUpdateDTO exerciseUpdate)
         {
-            try{
-                if(exerciseUpdate is null || !ModelState.IsValid){
+            try
+            {
+                if (exerciseUpdate is null || !ModelState.IsValid)
+                {
                     return BadRequest();
                 }
 
                 var exercise = await _repository.Exercise.GetExerciseById(id);
-                if(exercise is null){
+                if (exercise is null)
+                {
                     return NotFound();
                 }
 
@@ -97,7 +112,8 @@ namespace API.Controllers
 
                 return NoContent();
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }
@@ -105,9 +121,11 @@ namespace API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteExercise(long id)
         {
-            try{
+            try
+            {
                 var exercise = await _repository.Exercise.GetExerciseById(id);
-                if(exercise is null){
+                if (exercise is null)
+                {
                     return NotFound();
                 }
 
@@ -116,7 +134,8 @@ namespace API.Controllers
 
                 return NoContent();
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }

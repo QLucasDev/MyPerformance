@@ -9,6 +9,7 @@ namespace API.Models
     {
         public long Id { get; set; }
         public long? TrainingId { get; set; }
+        public long UserId { get; set; }
         public string Name { get; set; }
         public int Series { get; set; }
         public int Repetitions { get; set; }
