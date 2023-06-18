@@ -14,7 +14,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IJwtProvider _jwtProvider;
         private readonly IHash _hash;
@@ -22,7 +22,7 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private EmailChecker _mailChecker = new EmailChecker();
 
-        public LoginController(IJwtProvider jwtProvider, IHash hash, IRepositoryWrapper repository, IMapper mapper)
+        public UserController(IJwtProvider jwtProvider, IHash hash, IRepositoryWrapper repository, IMapper mapper)
         {
             _jwtProvider = jwtProvider;
             _hash = hash;
@@ -50,10 +50,9 @@ namespace API.Controllers
 
                 if (user.Email.Equals(userLogin.Email) && password)
                 {
-                    //Console.WriteLine("Senha: " + user.Password);
                     var _claim = new List<Claim>
                     {
-                        new Claim("ClaimId", user.Id.ToString()),
+                        new Claim("UserId", user.Id.ToString()),
                         new Claim(ClaimTypes.Name, user.Name)
                     };
 

@@ -35,18 +35,18 @@ namespace API.Services
         }
         public AuthenticatedResponse GetToken(List<Claim> claim)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("PasswordKey")));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:PasswordKey"]));//(_config.GetValue<string>("PasswordKey")));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var tokeOptions = new JwtSecurityToken(
-                issuer: _config["profile:http:applicationUrl"],
-                audience: _config["profile:http:applicationUrl"],
+            var tokenOptions = new JwtSecurityToken(
+                issuer: _config["JwtSettings:Issuer"],
+                audience: _config["JwtSettings:Audience"],
                 claims: claim,
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: signinCredentials
             );
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            return new AuthenticatedResponse { Token = tokenString };
+            return new AuthenticatedResponse { Token = tokenString, ExpirationDate = tokenOptions.ValidTo.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss")};
         }
     }
 }

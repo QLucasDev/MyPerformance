@@ -9,6 +9,7 @@ namespace API.Interface
     public interface ITrainingRepository : IRepositoryBase<Training>
     {
         Task<IEnumerable<Training>> GetTraining();
+        Task<IEnumerable<Training>> GetUserTraining(long id);
         Task<Training> GetTrainingById(long id);
         void CreateTraining(Training training);
         void UpdateTraining(Training training);

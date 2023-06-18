@@ -26,8 +26,8 @@ namespace API.Controllers
             _jwtProvider = jwtProvider;
         }
 
-        [HttpGet, Authorize]
-        public async Task<IActionResult> GetUserExercises()
+        [HttpGet("All"), Authorize]
+        public async Task<IActionResult> GetExercises()
         {
             try
             {
@@ -40,6 +40,24 @@ namespace API.Controllers
                 return StatusCode(500, ex.Message);
             }
 
+        }
+
+        [HttpGet("User"), Authorize]
+        public async Task<IActionResult> GetUserExercises()
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                string userId = _jwtProvider.GetUserIdFromToken(token);
+
+                var exercises = await _repository.Exercise.GetUserExercises(long.Parse(userId));
+                var exercisesDTO = _mapper.Map<IEnumerable<ExerciseDTO>>(exercises);
+                return Ok(exercisesDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet("{id}", Name = "ExerciseById"), Authorize]
@@ -64,7 +82,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> CreateExercise([FromBody] ExercisePostDTO exercisePost)
         {
             try
@@ -89,7 +107,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> UpdateExecise(long id, [FromBody] ExerciseUpdateDTO exerciseUpdate)
         {
             try
@@ -118,7 +136,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public async Task<IActionResult> DeleteExercise(long id)
         {
             try

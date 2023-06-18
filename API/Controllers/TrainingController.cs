@@ -6,6 +6,7 @@ using API.Interface;
 using API.Models;
 using API.Models.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,51 +18,80 @@ namespace API.Controllers
 
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
+        private readonly IJwtProvider _jwtProvider;
 
-        public TrainingController(IRepositoryWrapper repository, IMapper mapper)
+        public TrainingController(IRepositoryWrapper repository, IMapper mapper, IJwtProvider jwtProvider)
         {
             _repository = repository;
             _mapper = mapper;
+            _jwtProvider = jwtProvider;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetAllTraining()
         {
-            try{
+            try
+            {
                 var training = await _repository.Training.GetTraining();
                 var trainingDTO = _mapper.Map<IEnumerable<TrainingDTO>>(training);
                 return Ok(trainingDTO);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }
 
-        [HttpGet("{id}", Name = "TraininById")]
+        [HttpGet, Authorize]
+        public async Task<IActionResult> GetUserTraining()
+        {
+            try
+            {
+                string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                string userId = _jwtProvider.GetUserIdFromToken(token);
+
+                var training = await _repository.Training.GetUserTraining(long.Parse(userId));
+                var trainingDTO = _mapper.Map<IEnumerable<TrainingDTO>>(training);
+                return Ok(trainingDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        [HttpGet("{id}", Name = "TraininById"), Authorize]
         public async Task<IActionResult> GetTrainingById(long id)
         {
-            try{
+            try
+            {
                 var training = await _repository.Training.GetTrainingById(id);
 
-                if(training is null){
+                if (training is null)
+                {
                     return NotFound();
                 }
-                else{
+                else
+                {
                     var trainingDTO = _mapper.Map<TrainingDTO>(training);
                     return Ok(trainingDTO);
                 }
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateTraining([FromBody]TrainingPostDTO trainingPost)
+        [HttpPost, Authorize]
+        public async Task<IActionResult> CreateTraining([FromBody] TrainingPostDTO trainingPost)
         {
-            try{
-                if(trainingPost is null || !ModelState.IsValid){
-                return BadRequest();
+            try
+            {
+                if (trainingPost is null || !ModelState.IsValid)
+                {
+                    return BadRequest();
                 }
 
                 var training = _mapper.Map<Training>(trainingPost);
@@ -71,21 +101,25 @@ namespace API.Controllers
 
                 return CreatedAtRoute("TrainingById", training.Id, training);
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
-            }            
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTraining(long id, [FromBody]TrainingUpdateDTO trainingUpdate)
+        [HttpPut("{id}"), Authorize]
+        public async Task<IActionResult> UpdateTraining(long id, [FromBody] TrainingUpdateDTO trainingUpdate)
         {
-            try{
-                if(trainingUpdate is null || !ModelState.IsValid){
+            try
+            {
+                if (trainingUpdate is null || !ModelState.IsValid)
+                {
                     return BadRequest();
                 }
 
                 var training = await _repository.Training.GetTrainingById(id);
-                if(training is null){
+                if (training is null)
+                {
                     return NotFound();
                 }
 
@@ -96,17 +130,20 @@ namespace API.Controllers
 
                 return NoContent();
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
-            }   
+            }
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public async Task<IActionResult> DeleteTraining(long id)
         {
-            try{
+            try
+            {
                 var training = await _repository.Training.GetTrainingById(id);
-                if(training is null){
+                if (training is null)
+                {
                     return NotFound();
                 }
 
@@ -115,7 +152,8 @@ namespace API.Controllers
 
                 return NoContent();
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }
