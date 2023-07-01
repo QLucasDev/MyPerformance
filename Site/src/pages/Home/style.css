@@ -1,0 +1,51 @@
+.home {
+    height: 100vh;
+    width: 100vw;
+
+    background-image: url('../../assets/bg.png');
+    background-size: cover;
+    display: grid;
+}
+
+.home header {
+    width: 100vw;
+    height: 10vh;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 1rem;
+    padding: 0 5.5rem 0 2.5rem;
+}
+
+.home header img{
+    height: 100%;
+}
+
+.home header a {
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.home header img, a, h1 {
+    color: white;
+}
+
+.home main {
+    display: flex;
+    align-items: end;
+}
+
+.home_text h1{
+    font-family: 'Anton';
+    font-size: 130px;
+    letter-spacing: 1rem;
+    padding: 0 2rem;
+}
+
+.red {
+    color: #ff383e;
+}
